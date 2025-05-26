@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>You're Never Alone 💕</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(-45deg, #ff6b9d, #ff8e9b, #ffc3a0, #ffafcc);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .heart {
+            position: absolute;
+            color: rgba(255, 192, 203, 0.8);
+            font-size: 20px;
+            animation: floatHeart 6s linear infinite;
+        }
+
+        @keyframes floatHeart {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .main-title {
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            color: white;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+            margin-bottom: 30px;
+            animation: titleGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleGlow {
+            from { text-shadow: 2px 2px 10px rgba(0,0,0,0.3), 0 0 20px rgba(255,255,255,0.5); }
+            to { text-shadow: 2px 2px 10px rgba(0,0,0,0.3), 0 0 30px rgba(255,255,255,0.8); }
+        }
+
+        .music-section {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 20px 0;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .music-input {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            margin-bottom: 15px;
+            background: rgba(255,255,255,0.9);
+            outline: none;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .music-button {
+            background: linear-gradient(45deg, #ff6b9d, #ff8e9b);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255,107,157,0.4);
+        }
+
+        .music-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255,107,157,0.6);
+        }
+
+        .audio-player {
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .surprise-box {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 30px 0;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            max-width: 600px;
+            width: 100%;
+            transform: scale(0);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            border: 3px solid transparent;
+            background-clip: padding-box;
+            position: relative;
+        }
+
+        .surprise-box::before {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            bottom: -3px;
+            background: linear-gradient(45deg, #ff6b9d, #ffc3a0, #ff8e9b, #ffafcc);
+            border-radius: 20px;
+            z-index: -1;
+            animation: borderGlow 3s linear infinite;
+        }
+
+        @keyframes borderGlow {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
+
+        .surprise-box.show {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .message {
+            font-size: clamp(1.2rem, 4vw, 1.8rem);
+            color: #333;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .emoji-line {
+            font-size: clamp(1.5rem, 6vw, 2.5rem);
+            margin: 15px 0;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        .reveal-button {
+            background: linear-gradient(45deg, #ff6b9d, #ff8e9b);
+            border: none;
+            padding: 20px 40px;
+            border-radius: 50px;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(255,107,157,0.4);
+            margin: 20px 0;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .reveal-button:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(255,107,157,0.6);
+        }
+
+        .floating-emojis {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .floating-emoji {
+            position: absolute;
+            font-size: 30px;
+            animation: floatEmoji 8s linear infinite;
+        }
+
+        @keyframes floatEmoji {
+            0% {
+                transform: translateY(100vh) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) translateX(50px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .sparkles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 3;
+        }
+
+        .sparkle {
+            position: absolute;
+            color: #fff;
+            font-size: 12px;
+            animation: sparkle 3s ease-in-out infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .music-section, .surprise-box {
+                margin: 15px 0;
+                padding: 25px 20px;
+            }
+            
+            .reveal-button {
+                padding: 15px 30px;
+                font-size: 16px;
+            }
+        }
+
+        .love-quote {
+            font-style: italic;
+            color: rgba(255,255,255,0.9);
+            font-size: clamp(1rem, 3vw, 1.3rem);
+            margin: 20px 0;
+            text-shadow: 1px 1px 5px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="hearts" id="hearts"></div>
+    <div class="floating-emojis" id="floatingEmojis"></div>
+    <div class="sparkles" id="sparkles"></div>
+
+    <div class="container">
+        <h1 class="main-title">You're Never Alone 💖</h1>
+        
+        <p class="love-quote">"Distance means nothing when someone means everything" ✨</p>
+        
+        <div class="music-section">
+            <h3 style="color: white; margin-bottom: 20px; font-size: 1.3rem;">🎵 Our Special Song 🎵</h3>
+            <audio controls class="audio-player">
+                <source src="the_one.mp3" type="audio/mpeg" />
+            </audio>
+            <p style="color: rgba(255,255,255,0.9); font-size: 1rem; margin-top: 15px; text-shadow: 1px 1px 3px rgba(0,0,0,0.3);">💕 This song reminds me of you every single day 💕</p>
+        </div>
+
+        <button class="reveal-button" onclick="revealSurprise()">
+            💝 Click for Another Sweet Surprise 💝
+        </button>
+
+        <div class="surprise-box" id="surpriseBox">
+            <div class="emoji-line">💕 🌟 💖 🌟 💕</div>
+            <div class="message">
+                <strong>I'll be with you forever! 💖</strong><br><br>
+                Even when we're apart, my heart is always with you. 
+                You mean everything to me, and I want you to know that 
+                you're never truly alone because my love surrounds you always. 💕
+            </div>
+            <div class="emoji-line">🥰 💝 🌹 💝 🥰</div>
+            <div class="message" style="font-size: 1.1rem; color: #ff6b9d;">
+                You're my sunshine, my happiness, my everything! ☀️💖
+            </div>
+            <div class="emoji-line">✨ 💫 ⭐ 💫 ✨</div>
+        </div>
+    </div>
+
+    <script>
+        // Create floating hearts
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerHTML = Math.random() > 0.5 ? '💖' : '💕';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
+            heart.style.fontSize = (Math.random() * 10 + 15) + 'px';
+            document.getElementById('hearts').appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 6000);
+        }
+
+        // Create floating emojis
+        function createFloatingEmoji() {
+            const emojis = ['💝', '🌹', '✨', '💫', '🦋', '🌟', '💖', '💕', '🥰', '😘'];
+            const emoji = document.createElement('div');
+            emoji.className = 'floating-emoji';
+            emoji.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+            emoji.style.left = Math.random() * 100 + 'vw';
+            emoji.style.animationDuration = (Math.random() * 4 + 6) + 's';
+            emoji.style.animationDelay = Math.random() * 2 + 's';
+            document.getElementById('floatingEmojis').appendChild(emoji);
+
+            setTimeout(() => {
+                emoji.remove();
+            }, 10000);
+        }
+
+        // Create sparkles
+        function createSparkle() {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            sparkle.innerHTML = '✨';
+            sparkle.style.left = Math.random() * 100 + 'vw';
+            sparkle.style.top = Math.random() * 100 + 'vh';
+            sparkle.style.animationDelay = Math.random() * 3 + 's';
+            document.getElementById('sparkles').appendChild(sparkle);
+
+            setTimeout(() => {
+                sparkle.remove();
+            }, 3000);
+        }
+
+        // Start animations
+        setInterval(createHeart, 1000);
+        setInterval(createFloatingEmoji, 2000);
+        setInterval(createSparkle, 1500);
+
+        // Reveal surprise function
+        function revealSurprise() {
+            const surpriseBox = document.getElementById('surpriseBox');
+            surpriseBox.classList.add('show');
+            
+            // Create extra sparkles on reveal
+            for(let i = 0; i < 20; i++) {
+                setTimeout(createSparkle, i * 100);
+            }
+            
+            // Scroll to surprise box smoothly
+            setTimeout(() => {
+                surpriseBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 300);
+        }
+
+        // Background music function
+        function playBackgroundMusic() {
+            const music = document.getElementById('backgroundMusic');
+            music.currentTime = 45; // Start from 45 seconds
+            music.play().then(() => {
+                // Create extra sparkles when music starts
+                for(let i = 0; i < 25; i++) {
+                    setTimeout(createSparkle, i * 150);
+                }
+                
+                // Change button text after clicking
+                event.target.innerHTML = '🎵 Music is Playing Just for You 🎵';
+                event.target.style.background = 'linear-gradient(45deg, #4CAF50, #45a049)';
+                event.target.disabled = true;
+                
+                // Show a sweet message
+                setTimeout(() => {
+                    alert('🎵💖 This song always reminds me of you, beautiful! 💖🎵');
+                }, 1000);
+            }).catch((error) => {
+                alert('💕 Click here to start our special song! 💕');
+            });
+        }
+
+        // Set up audio to start from 45 seconds and handle autoplay
+        window.addEventListener('load', function() {
+            const audio = document.getElementById('audioPlayer');
+            if (audio) {
+                audio.addEventListener('loadedmetadata', function() {
+                    audio.currentTime = 45; // Start from 45 seconds
+                });
+                
+                // Try to autoplay (may be blocked by browser)
+                audio.play().catch(function(error) {
+                    console.log('Autoplay prevented, user will need to click play');
+                });
+            }
+        });
+
+        // Extra sparkles when music starts
+        setTimeout(() => {
+            for(let i = 0; i < 15; i++) {
+                setTimeout(createSparkle, i * 300);
+            }
+        }, 2000);
+
+        // Add some initial sparkles
+        setTimeout(() => {
+            for(let i = 0; i < 10; i++) {
+                setTimeout(createSparkle, i * 200);
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
